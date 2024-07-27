@@ -70,6 +70,7 @@ public class Principal {
 		} catch (TextoSemNadaException exc) {
 			exc.showMessage("titulo");
 			criarEvento(opcao);
+			return;
 		}
 
 		String descricao = r.readData("Descricao do evento: ");
@@ -77,8 +78,9 @@ public class Principal {
 		try {
 			novoEvento.setDescricao(descricao);
 		} catch (TextoSemNadaException exc) {
-			exc.showMessage("descrição");
+			exc.showMessage("descricao");
 			criarEvento(opcao, titulo);
+			return;
 		}
 
 		switch (opcao) {
@@ -115,6 +117,7 @@ public class Principal {
 		} catch (TextoSemNadaException exc) {
 			exc.showMessage("titulo");
 			criarEvento(opcao);
+			return;
 		}
 
 		String descricao = r.readData("Descricao do evento: ");
@@ -122,10 +125,10 @@ public class Principal {
 		try {
 			novoEvento.setDescricao(descricao);
 		} catch (TextoSemNadaException exc) {
-			exc.showMessage("descrição");
+			exc.showMessage("descricao");
 			criarEvento(opcao, titulo);
+			return;
 		}
-		;
 
 		switch (opcao) {
 			case "1":
@@ -165,6 +168,7 @@ public class Principal {
 		} catch (TextoSemNadaException exc) {
 			exc.showMessage("titulo");
 			criarEvento(opcao);
+			return;
 		}
 
 		String descricao = r.readData("Descricao do evento: ");
@@ -172,7 +176,7 @@ public class Principal {
 		try {
 			novoEvento.setDescricao(descricao);
 		} catch (TextoSemNadaException exc) {
-			exc.showMessage("descrição");
+			exc.showMessage("descricao");
 			criarEvento(opcao, titulo);
 		}
 
@@ -223,14 +227,23 @@ public class Principal {
 		Endereco end = new Endereco();
 		System.out.println("Vamos colocar o endereco do evento: ");
 
-		end.setPais(r.readData("Pais: "));
-		end.setEstado(r.readData("Estado: "));
-		end.setCidade(r.readData("Cidade: "));
-		end.setBairro(r.readData("Bairro: "));
-		end.setRua(r.readData("Rua: "));
-		end.setNumero(Integer.parseInt(r.readData("Numero: ")));
-		end.setComplemento(r.readData("Complemento: "));
-		end.setCep(r.readData("Cep: "));
+		try {
+			end.setPais(r.readData("Pais: "));
+			end.setEstado(r.readData("Estado: "));
+			end.setCidade(r.readData("Cidade: "));
+			end.setBairro(r.readData("Bairro: "));
+			end.setRua(r.readData("Rua: "));
+			end.setNumero(Integer.parseInt(r.readData("Numero: ")));
+			end.setComplemento(r.readData("Complemento: "));
+			end.setCep(r.readData("Cep: "));
+		} catch (TextoSemNadaException exc) {
+			// implementar ###
+			exc.showMessage("campo implements");
+		} catch (NumeroNegativoException exc) {
+			exc.showMessage("numero implements");
+		} catch (CepInvalidoException exc) {
+			exc.showMessage();
+		}
 
 		return end;
 	}
@@ -286,7 +299,12 @@ public class Principal {
 
 	public static Reuniao criarReuniao() {
 		Reuniao reuniao = new Reuniao();
-		reuniao.setTema(r.readData("Tema da reuniao: "));
+		try {
+			reuniao.setTema(r.readData("Tema da reuniao: "));
+		} catch (TextoSemNadaException exc) {
+			// implementar direito depois ###
+			exc.showMessage("tema");
+		}
 
 		ArrayList<String> participantes = new ArrayList<String>();
 		int quantidade = Integer.parseInt(r.readData("Quantidade de participantes da reuniao: "));
@@ -303,14 +321,26 @@ public class Principal {
 	public static Aniversario criarAniversario() {
 		Aniversario aniversario = new Aniversario();
 
-		aniversario.setAniversariante(r.readData("Aniversariante: "));
-		aniversario.setTipoDeRoupa(r.readData("Tipo de roupa: "));
+		try {
+			aniversario.setAniversariante(r.readData("Aniversariante: "));
+			aniversario.setTipoDeRoupa(r.readData("Tipo de roupa: "));
+		} catch (TextoSemNadaException exc) {
+			// Implementar ###
+			exc.showMessage("implemnetar");
+		}
+
 		return aniversario;
 	}
 
 	public static Esporte criarEsporte() {
 		Esporte esporte = new Esporte();
-		esporte.setEsporte(r.readData("Esporte: "));
+
+		try {
+			esporte.setEsporte(r.readData("Esporte: "));
+		} catch (TextoSemNadaException exc) {
+			// implementar ###
+			exc.showMessage("implements");
+		}
 
 		int quantidadeTimes = Integer.parseInt(r.readData("Quantidade de times: "));
 		ArrayList<String> times = new ArrayList<String>();
@@ -326,7 +356,7 @@ public class Principal {
 
 	public static Show criarShow() {
 		Show show = new Show();
-		show.setTipo(r.readData("Tippo de show: "));
+		show.setTipo(r.readData("Tipo de show: "));
 
 		int quatidadeArtistas = Integer.parseInt(r.readData("Quantidade de artistas: "));
 		ArrayList<String> artistas = new ArrayList<String>();
@@ -337,7 +367,13 @@ public class Principal {
 		}
 		show.setArtistas(artistas);
 
-		show.setPrecoIngresso(Double.parseDouble(r.readData("Preco do ingresso[0.00]: ")));
+		try {
+			show.setPrecoIngresso(Double.parseDouble(r.readData("Preco do ingresso[0.00]: ")));
+		} catch (NumeroNegativoException exc) {
+			// implementar ###
+			exc.showMessage("preço");
+		}
+
 		return show;
 	}
 
