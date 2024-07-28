@@ -11,7 +11,7 @@ public class Principal {
 	static ArrayList<Evento> calendario = new ArrayList<Evento>();
 
 	public static void main(String args[]) {
-		System.out.println("\n\nBem vindo ao seu calendario");
+		System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "\n\nBem vindo ao seu calendario" + ConsoleColors.RESET);
 		System.out.println("Aqui voce pode marcar todos os seus compromissos e ");
 		System.out.println("acessa-los de maneira facil, rapida e eficiente.\n");
 
@@ -39,7 +39,7 @@ public class Principal {
 	}
 
 	public static void criarEvento() {
-		Evento novoEvento = new Evento();
+		Evento novoEvento;
 		System.out.println(" == CADASTRO DE EVENTO == ");
 		System.out.println("Selecione o tipo do seu evento: ");
 		System.out.println(" 1 - Reuniao");
@@ -51,9 +51,16 @@ public class Principal {
 
 		switch (opcao) {
 			case "1":
+				novoEvento = new Reuniao();
+				break;
 			case "2":
+				novoEvento = new Aniversario();
+				break;
 			case "3":
+				novoEvento = new Esporte();
+				break;
 			case "4":
+				novoEvento = new Show();
 				break;
 
 			case "0":
@@ -63,144 +70,44 @@ public class Principal {
 				return;
 		}
 
-		String titulo = r.readData("Titulo: ");
+		boolean control;
+		do {
+			try {
+				control = true;
+				String titulo = r.readData("Titulo: ");
+				novoEvento.setTitulo(titulo);
+			} catch (TextoSemNadaException exc) {
+				control = false;
+				exc.showMessage("titulo");
+			}
+		} while (!control);
 
-		try {
-			novoEvento.setTitulo(titulo);
-		} catch (TextoSemNadaException exc) {
-			exc.showMessage("titulo");
-			criarEvento(opcao);
-			return;
-		}
-
-		String descricao = r.readData("Descricao do evento: ");
-
-		try {
-			novoEvento.setDescricao(descricao);
-		} catch (TextoSemNadaException exc) {
-			exc.showMessage("descricao");
-			criarEvento(opcao, titulo);
-			return;
-		}
-
-		switch (opcao) {
-			case "1":
-				novoEvento = criarReuniao();
-				break;
-			case "2":
-				novoEvento = criarAniversario();
-				break;
-			case "3":
-				novoEvento = criarEsporte();
-				break;
-			case "4":
-				novoEvento = criarShow();
-				break;
-			default:
-				return;
-		}
-
-		novoEvento.setData(criarData());
-		novoEvento.setEstadoDoEvento(selecionarEstadoDoEvento());
-		novoEvento.setEndereco(criarEndereco());
-
-		calendario.add(novoEvento);
-	}
-
-	public static void criarEvento(String opcao) {
-		Evento novoEvento = new Evento();
-
-		String titulo = r.readData("Titulo: ");
-
-		try {
-			novoEvento.setTitulo(titulo);
-		} catch (TextoSemNadaException exc) {
-			exc.showMessage("titulo");
-			criarEvento(opcao);
-			return;
-		}
-
-		String descricao = r.readData("Descricao do evento: ");
-
-		try {
-			novoEvento.setDescricao(descricao);
-		} catch (TextoSemNadaException exc) {
-			exc.showMessage("descricao");
-			criarEvento(opcao, titulo);
-			return;
-		}
+		do {
+			try {
+				control = true;
+				String descricao = r.readData("Descricao do evento: ");
+				novoEvento.setDescricao(descricao);
+			} catch (TextoSemNadaException exc) {
+				control = false;
+				exc.showMessage("descricao");
+			}
+		} while (!control);
 
 		switch (opcao) {
 			case "1":
-				novoEvento = criarReuniao();
+				novoEvento = criarReuniao((Reuniao) novoEvento);
 				break;
 			case "2":
-				novoEvento = criarAniversario();
+				novoEvento = criarAniversario((Aniversario) novoEvento);
 				break;
 			case "3":
-				novoEvento = criarEsporte();
+				novoEvento = criarEsporte((Esporte) novoEvento);
 				break;
 			case "4":
-				novoEvento = criarShow();
+				novoEvento = criarShow((Show) novoEvento);
 				break;
 			default:
 				return;
-		}
-
-		try {
-			novoEvento.setTitulo(titulo);
-		} catch (TextoSemNadaException exc) {
-			exc.showMessage("titulo");
-		}
-
-		novoEvento.setData(criarData());
-		novoEvento.setEstadoDoEvento(selecionarEstadoDoEvento());
-		novoEvento.setEndereco(criarEndereco());
-
-		calendario.add(novoEvento);
-	}
-
-	public static void criarEvento(String opcao, String titulo) {
-		Evento novoEvento = new Evento();
-
-		try {
-			novoEvento.setTitulo(titulo);
-		} catch (TextoSemNadaException exc) {
-			exc.showMessage("titulo");
-			criarEvento(opcao);
-			return;
-		}
-
-		String descricao = r.readData("Descricao do evento: ");
-
-		try {
-			novoEvento.setDescricao(descricao);
-		} catch (TextoSemNadaException exc) {
-			exc.showMessage("descricao");
-			criarEvento(opcao, titulo);
-		}
-
-		switch (opcao) {
-			case "1":
-				novoEvento = criarReuniao();
-				break;
-			case "2":
-				novoEvento = criarAniversario();
-				break;
-			case "3":
-				novoEvento = criarEsporte();
-				break;
-			case "4":
-				novoEvento = criarShow();
-				break;
-			default:
-				return;
-		}
-
-		try {
-			novoEvento.setTitulo(titulo);
-		} catch (TextoSemNadaException exc) {
-			exc.showMessage("titulo");
 		}
 
 		novoEvento.setData(criarData());
@@ -299,8 +206,7 @@ public class Principal {
 		}
 	}
 
-	public static Reuniao criarReuniao() {
-		Reuniao reuniao = new Reuniao();
+	public static Reuniao criarReuniao(Reuniao reuniao) {
 		boolean control = false;
 
 		do {
@@ -335,8 +241,7 @@ public class Principal {
 		return reuniao;
 	}
 
-	public static Aniversario criarAniversario() {
-		Aniversario aniversario = new Aniversario();
+	public static Aniversario criarAniversario(Aniversario aniversario) {
 		boolean control = false;
 
 		do {
@@ -362,8 +267,7 @@ public class Principal {
 		return aniversario;
 	}
 
-	public static Esporte criarEsporte() {
-		Esporte esporte = new Esporte();
+	public static Esporte criarEsporte(Esporte esporte) {
 		boolean control = false;
 
 		do {
@@ -399,8 +303,7 @@ public class Principal {
 		return esporte;
 	}
 
-	public static Show criarShow() {
-		Show show = new Show();
+	public static Show criarShow(Show show) {
 		show.setTipo(r.readData("Tipo de show: "));
 
 		int quantidadeArtistas = 0;
@@ -443,7 +346,8 @@ public class Principal {
 	public static void verEvento(Evento evento) {
 		SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		System.out
-				.println(" ==== " + evento.getTitulo() + " - " + formatoData.format(evento.getData()) + " ====");
+				.println(" ==== " + ConsoleColors.WHITE_BOLD_BRIGHT + evento.getTitulo() + ConsoleColors.RESET + " - "
+						+ formatoData.format(evento.getData()) + " ====");
 		System.out.println(evento.getDescricao());
 		verEndereco(evento.getEndereco());
 
