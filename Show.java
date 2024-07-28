@@ -21,8 +21,8 @@ public class Show extends Evento {
 		this.precoIngresso = precoIngresso;
 	}
 
-	// Sobreescrita
-	public void ConcluirEvento() {
+	// Polimorfismo por Sobreescrita
+	public void concluirEvento() {
 		estadoDoEvento = "Finalizado";
 	}
 

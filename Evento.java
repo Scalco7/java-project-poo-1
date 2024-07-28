@@ -3,14 +3,12 @@
 
 import java.util.Date;
 
-public class Evento {
+public abstract class Evento {
 	private String titulo;
 	private Date data;
 	private Endereco endereco;
 	private String descricao;
 	protected String estadoDoEvento;
-
-	// perguntar se o polimorfismo por sobreescrita conta o da interface
 
 	public Evento() {
 		titulo = "";
@@ -29,7 +27,7 @@ public class Evento {
 		this.estadoDoEvento = estadoDoEvento;
 	}
 
-	public void ConcluirEvento() {
+	public void concluirEvento() {
 		estadoDoEvento = "Concluido";
 	}
 

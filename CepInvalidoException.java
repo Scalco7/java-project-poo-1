@@ -6,7 +6,7 @@ public class CepInvalidoException extends Exception implements ExceptionInterfac
         showMessage("Cep");
     }
 
-    // Polimorfismo por sobreescrita
+    // Polimorfismo por sobreescrita e polimorfismo por sobrecarga
     public void showMessage(String field) {
         System.out.println("O " + field + " deve conter exatamente 8 caracteres");
     }
