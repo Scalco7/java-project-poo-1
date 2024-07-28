@@ -16,7 +16,7 @@ public class Principal {
 		System.out.println("acessa-los de maneira facil, rapida e eficiente.\n");
 
 		loop: while (true) {
-			System.out.println("\n == O que voce deseja fazer? == ");
+			System.out.println("\n== O que voce deseja fazer? == ");
 			System.out.println(" 1 - Cadastrar um evento");
 			System.out.println(" 2 - Ver meu calendario");
 			System.out.println(" 0 - Sair");
@@ -40,7 +40,7 @@ public class Principal {
 
 	public static void criarEvento() {
 		Evento novoEvento;
-		System.out.println(" == CADASTRO DE EVENTO == ");
+		System.out.println("== CADASTRO DE EVENTO == ");
 		System.out.println("Selecione o tipo do seu evento: ");
 		System.out.println(" 1 - Reuniao");
 		System.out.println(" 2 - Aniversario");
@@ -118,7 +118,7 @@ public class Principal {
 	}
 
 	public static void verCalendario() {
-		System.out.println(" == Seu calendario == ");
+		System.out.println("== Seu calendario == ");
 		if (calendario.size() == 0) {
 			System.out.println("Calendario vazio, cadastre um evento!!\n");
 			return;
@@ -346,9 +346,9 @@ public class Principal {
 	public static void verEvento(Evento evento) {
 		SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		System.out
-				.println(" ==== " + ConsoleColors.WHITE_BOLD_BRIGHT + evento.getTitulo() + ConsoleColors.RESET + " - "
+				.println("==== " + ConsoleColors.WHITE_BOLD_BRIGHT + evento.getTitulo() + ConsoleColors.RESET + " - "
 						+ formatoData.format(evento.getData()) + " ====");
-		System.out.println(evento.getDescricao());
+		System.out.println(evento.getDescricao() + '\n');
 		verEndereco(evento.getEndereco());
 
 		switch (evento.getClass().getName()) {
@@ -369,7 +369,28 @@ public class Principal {
 				break;
 		}
 
-		System.out.println("Estado: " + evento.getEstadoDoEvento());
+		String estadoDoEvento = evento.getEstadoDoEvento();
+		String color = "";
+
+		switch (estadoDoEvento) {
+			case "Confirmado":
+				color = ConsoleColors.GREEN_BOLD_BRIGHT;
+
+				break;
+			case "Em andamento":
+				color = ConsoleColors.YELLOW_BOLD_BRIGHT;
+				break;
+			case "Concluido":
+				color = ConsoleColors.BLUE_BOLD_BRIGHT;
+				break;
+			case "Finalizado":
+			case "Cancelado":
+				color = ConsoleColors.RED_BOLD_BRIGHT;
+				break;
+
+		}
+
+		System.out.println("Estado: " + color + estadoDoEvento + ConsoleColors.RESET);
 	}
 
 	public static void verEndereco(Endereco endereco) {
