@@ -1,3 +1,6 @@
+//Felipe Maciel Scalco
+//RA: 25658388
+
 class ConsoleColors {
     // Reset
     public static final String RESET = "\033[0m"; // Text Reset

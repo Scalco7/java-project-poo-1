@@ -19,6 +19,7 @@ public class Esporte extends Evento implements CampeonatoInterface {
 	}
 
 	// Interface
+	// Polimorfismo por sobreescrita
 	public ArrayList<String> getJogos() {
 		ArrayList<String> jogos = new ArrayList<String>();
 
