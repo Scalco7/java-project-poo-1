@@ -133,24 +133,82 @@ public class Principal {
 	public static Endereco criarEndereco() {
 		Endereco end = new Endereco();
 		System.out.println("Vamos colocar o endereco do evento: ");
+		boolean control;
 
-		try {
-			end.setPais(r.readData("Pais: "));
-			end.setEstado(r.readData("Estado: "));
-			end.setCidade(r.readData("Cidade: "));
-			end.setBairro(r.readData("Bairro: "));
-			end.setRua(r.readData("Rua: "));
-			end.setNumero(Integer.parseInt(r.readData("Numero: ")));
-			end.setComplemento(r.readData("Complemento: "));
-			end.setCep(r.readData("Cep: "));
-		} catch (TextoSemNadaException exc) {
-			// implementar ###
-			exc.showMessage("campo implements");
-		} catch (NumeroNegativoException exc) {
-			exc.showMessage("numero implements");
-		} catch (CepInvalidoException exc) {
-			exc.showMessage();
-		}
+		do {
+			try {
+				control = true;
+				end.setPais(r.readData("Pais: "));
+			} catch (TextoSemNadaException exc) {
+				exc.showMessage("pais");
+				control = false;
+			}
+		} while (!control);
+
+		do {
+			try {
+				control = true;
+				end.setEstado(r.readData("Estado: "));
+			} catch (TextoSemNadaException exc) {
+				exc.showMessage("estado");
+				control = false;
+			}
+		} while (!control);
+
+		do {
+			try {
+				control = true;
+				end.setCidade(r.readData("Cidade: "));
+			} catch (TextoSemNadaException exc) {
+				exc.showMessage("cidade");
+				control = false;
+			}
+		} while (!control);
+
+		do {
+			try {
+				control = true;
+				end.setBairro(r.readData("Bairro: "));
+			} catch (TextoSemNadaException exc) {
+				exc.showMessage("bairro");
+				control = false;
+			}
+		} while (!control);
+
+		do {
+			try {
+				control = true;
+				end.setRua(r.readData("Rua: "));
+			} catch (TextoSemNadaException exc) {
+				exc.showMessage("rua");
+				control = false;
+			}
+		} while (!control);
+
+		do {
+			try {
+				control = true;
+				end.setNumero(Integer.parseInt(r.readData("Numero: ")));
+			} catch (NumeroNegativoException exc) {
+				exc.showMessage("numero da casa");
+				control = false;
+			} catch (NumberFormatException exc) {
+				System.out.println("coloque um numero.");
+				control = false;
+			}
+		} while (!control);
+
+		end.setComplemento(r.readData("Complemento: "));
+
+		do {
+			try {
+				control = true;
+				end.setCep(r.readData("Cep: "));
+			} catch (CepInvalidoException exc) {
+				exc.showMessage();
+				control = false;
+			}
+		} while (!control);
 
 		return end;
 	}
