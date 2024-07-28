@@ -254,19 +254,21 @@ public class Principal {
 
 		do {
 			controle = true;
-			String dia = String.format("%02d", Integer.parseInt(r.readData("Dia do mes[01-31]: ")));
-			String mes = String.format("%02d", Integer.parseInt(r.readData("Mes[01-12]: ")));
-			String ano = String.format("%04d", Integer.parseInt(r.readData("Ano[2015]: ")));
-			String hora = String.format("%02d", Integer.parseInt(r.readData("Hora[00-24]: ")));
-			String minuto = String.format("%02d", Integer.parseInt(r.readData("Minuto[00-59]: ")));
-
-			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy-HH:mm");
-			String dataTxt = dia + "/" + mes + "/" + ano + "-" + hora + ":" + minuto;
-
 			try {
+				String dia = String.format("%02d", Integer.parseInt(r.readData("Dia do mes[01-31]: ")));
+				String mes = String.format("%02d", Integer.parseInt(r.readData("Mes[01-12]: ")));
+				String ano = String.format("%04d", Integer.parseInt(r.readData("Ano[2015]: ")));
+				String hora = String.format("%02d", Integer.parseInt(r.readData("Hora[00-24]: ")));
+				String minuto = String.format("%02d", Integer.parseInt(r.readData("Minuto[00-59]: ")));
+
+				SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy-HH:mm");
+				String dataTxt = dia + "/" + mes + "/" + ano + "-" + hora + ":" + minuto;
 				data = formato.parse(dataTxt);
 			} catch (ParseException exp) {
-				System.out.println("Erro na data");
+				System.out.println("Erro na data.");
+				controle = false;
+			} catch (NumberFormatException exc) {
+				System.out.println("A data deve ser um numero.");
 				controle = false;
 			}
 		} while (!controle);
@@ -299,15 +301,30 @@ public class Principal {
 
 	public static Reuniao criarReuniao() {
 		Reuniao reuniao = new Reuniao();
-		try {
-			reuniao.setTema(r.readData("Tema da reuniao: "));
-		} catch (TextoSemNadaException exc) {
-			// implementar direito depois ###
-			exc.showMessage("tema");
-		}
+		boolean control = false;
+
+		do {
+			control = true;
+			try {
+				reuniao.setTema(r.readData("Tema da reuniao: "));
+			} catch (TextoSemNadaException exc) {
+				exc.showMessage("tema");
+				control = false;
+			}
+		} while (!control);
 
 		ArrayList<String> participantes = new ArrayList<String>();
-		int quantidade = Integer.parseInt(r.readData("Quantidade de participantes da reuniao: "));
+		int quantidade = 0;
+
+		do {
+			try {
+				control = true;
+				quantidade = Integer.parseInt(r.readData("Quantidade de participantes da reuniao: "));
+			} catch (NumberFormatException exc) {
+				System.out.println("A quantidade deve ser um numero.");
+				control = false;
+			}
+		} while (!control);
 
 		for (int i = 0; i < quantidade; i++) {
 			String nome = r.readData("Participante " + (i + 1) + ": ");
@@ -320,29 +337,57 @@ public class Principal {
 
 	public static Aniversario criarAniversario() {
 		Aniversario aniversario = new Aniversario();
+		boolean control = false;
 
-		try {
-			aniversario.setAniversariante(r.readData("Aniversariante: "));
-			aniversario.setTipoDeRoupa(r.readData("Tipo de roupa: "));
-		} catch (TextoSemNadaException exc) {
-			// Implementar ###
-			exc.showMessage("implemnetar");
-		}
+		do {
+			try {
+				control = true;
+				aniversario.setAniversariante(r.readData("Aniversariante: "));
+			} catch (TextoSemNadaException exc) {
+				exc.showMessage("aniversariante");
+				control = false;
+			}
+		} while (!control);
+
+		do {
+			try {
+				control = true;
+				aniversario.setTipoDeRoupa(r.readData("Tipo de roupa: "));
+			} catch (TextoSemNadaException exc) {
+				exc.showMessage("tipo de roupa");
+				control = false;
+			}
+		} while (!control);
 
 		return aniversario;
 	}
 
 	public static Esporte criarEsporte() {
 		Esporte esporte = new Esporte();
+		boolean control = false;
 
-		try {
-			esporte.setEsporte(r.readData("Esporte: "));
-		} catch (TextoSemNadaException exc) {
-			// implementar ###
-			exc.showMessage("implements");
-		}
+		do {
+			try {
+				control = true;
+				esporte.setEsporte(r.readData("Esporte: "));
+			} catch (TextoSemNadaException exc) {
+				exc.showMessage("esporte");
+				control = false;
+			}
+		} while (!control);
 
-		int quantidadeTimes = Integer.parseInt(r.readData("Quantidade de times: "));
+		int quantidadeTimes = 0;
+
+		do {
+			try {
+				control = true;
+				quantidadeTimes = Integer.parseInt(r.readData("Quantidade de times: "));
+			} catch (NumberFormatException exc) {
+				System.out.println("A quantidade deve ser um numero");
+				control = false;
+			}
+		} while (!control);
+
 		ArrayList<String> times = new ArrayList<String>();
 
 		for (int i = 0; i < quantidadeTimes; i++) {
@@ -358,21 +403,39 @@ public class Principal {
 		Show show = new Show();
 		show.setTipo(r.readData("Tipo de show: "));
 
-		int quatidadeArtistas = Integer.parseInt(r.readData("Quantidade de artistas: "));
+		int quantidadeArtistas = 0;
+		boolean control;
+
+		do {
+			try {
+				control = true;
+				quantidadeArtistas = Integer.parseInt(r.readData("Quantidade de artistas: "));
+			} catch (NumberFormatException exc) {
+				System.out.println("A quantidade deve ser um numero.");
+				control = false;
+			}
+		} while (!control);
+
 		ArrayList<String> artistas = new ArrayList<String>();
 
-		for (int i = 0; i < quatidadeArtistas; i++) {
+		for (int i = 0; i < quantidadeArtistas; i++) {
 			String artista = r.readData("Artista " + (i + 1) + ": ");
 			artistas.add(artista);
 		}
 		show.setArtistas(artistas);
 
-		try {
-			show.setPrecoIngresso(Double.parseDouble(r.readData("Preco do ingresso[0.00]: ")));
-		} catch (NumeroNegativoException exc) {
-			// implementar ###
-			exc.showMessage("preço");
-		}
+		do {
+			try {
+				control = true;
+				show.setPrecoIngresso(Double.parseDouble(r.readData("Preco do ingresso[0.00]: ")));
+			} catch (NumeroNegativoException exc) {
+				exc.showMessage("preco");
+				control = false;
+			} catch (NumberFormatException exc) {
+				System.out.println("O preco deve ser um numero.");
+				control = false;
+			}
+		} while (!control);
 
 		return show;
 	}
